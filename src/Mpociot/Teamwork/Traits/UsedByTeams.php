@@ -62,8 +62,10 @@ trait UsedByTeams
      */
     protected static function teamGuard()
     {
-        if (auth()->guest() || !auth()->user()->currentTeam) {
-            throw new Exception('No authenticated user with selected team present.');
+        if (!\App::runningInConsole()) {
+            if (auth()->guest() || !auth()->user()->currentTeam) {
+                throw new Exception('No authenticated user with selected team present.');
+            }
         }
     }
 }
