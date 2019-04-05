@@ -62,7 +62,7 @@ trait UsedByTeams
      */
     protected static function teamGuard()
     {
-        if (!app()->runningInConsole()) {
+        if (!app()->runningInConsole() || config('app.env') === 'testing') {
             if (auth()->guest() || !auth()->user()->currentTeam) {
                 throw new Exception('No authenticated user with selected team present.');
             }
