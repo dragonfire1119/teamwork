@@ -1,4 +1,6 @@
-<?php namespace Mpociot\Teamwork\Traits;
+<?php
+
+namespace Mpociot\Teamwork\Traits;
 
 /**
  * This file is part of Teamwork
@@ -62,9 +64,11 @@ trait UsedByTeams
      */
     protected static function teamGuard()
     {
-        if (!app()->runningInConsole() || config('app.env') === 'testing') {
-            if (auth()->guest() || !auth()->user()->currentTeam) {
-                throw new Exception('No authenticated user with selected team present.');
+        if (!in_array(config('app.env'), ['local', 'acceptance', 'testing'])) {
+            if (!app()->runningInConsole()) {
+                if (auth()->guest() || !auth()->user()->currentTeam) {
+                    throw new Exception('No authenticated user with selected team present.');
+                }
             }
         }
     }
